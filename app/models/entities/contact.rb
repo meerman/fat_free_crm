@@ -40,11 +40,11 @@
 
 class Contact < ActiveRecord::Base
   belongs_to :user
-  belongs_to :lead
-  belongs_to :assignee, class_name: "User", foreign_key: :assigned_to
-  belongs_to :reporting_user, class_name: "User", foreign_key: :reports_to
+  belongs_to :lead, optional: true
+  belongs_to :assignee, class_name: "User", foreign_key: :assigned_to, optional: true
+  belongs_to :reporting_user, class_name: "User", foreign_key: :reports_to, optional: true
   has_one :account_contact, dependent: :destroy
-  has_one :account, through: :account_contact
+  has_one :account, through: :account_contact, inverse_of: :contacts
   has_many :contact_opportunities, dependent: :destroy
   has_many :opportunities, -> { order("opportunities.id DESC").distinct }, through: :contact_opportunities
   has_many :tasks, as: :asset, dependent: :destroy # , :order => 'created_at DESC'
@@ -213,6 +213,8 @@ class Contact < ActiveRecord::Base
                    else
                      nil
                    end
+    # self.account.user = user if self.account.new_record?
+    self.account
   end
 
   ActiveSupport.run_load_hooks(:fat_free_crm_contact, self)

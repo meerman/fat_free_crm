@@ -28,10 +28,10 @@
 #
 
 class Account < ActiveRecord::Base
-  belongs_to :user
-  belongs_to :assignee, class_name: "User", foreign_key: :assigned_to
+  belongs_to :user, optional: true
+  belongs_to :assignee, class_name: "User", foreign_key: :assigned_to, optional: true
   has_many :account_contacts, dependent: :destroy
-  has_many :contacts, -> { distinct }, through: :account_contacts
+  has_many :contacts, -> { distinct }, through: :account_contacts, inverse_of: :account
   has_many :account_opportunities, dependent: :destroy
   has_many :opportunities, -> { order("opportunities.id DESC").distinct }, through: :account_opportunities
   has_many :pipeline_opportunities, -> { order("opportunities.id DESC").distinct.pipeline }, through: :account_opportunities, source: :opportunity

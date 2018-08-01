@@ -40,8 +40,8 @@
 
 class Lead < ActiveRecord::Base
   belongs_to :user
-  belongs_to :campaign
-  belongs_to :assignee, class_name: "User", foreign_key: :assigned_to
+  belongs_to :campaign, optional: true
+  belongs_to :assignee, class_name: "User", foreign_key: :assigned_to, optional: true
   has_one :contact, dependent: :nullify # On destroy keep the contact, but nullify its lead_id
   has_many :tasks, as: :asset, dependent: :destroy # , :order => 'created_at DESC'
   has_one :business_address, -> { where "address_type='Business'" }, dependent: :destroy, as: :addressable, class_name: "Address"
