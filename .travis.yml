@@ -34,7 +34,7 @@ matrix:
 addons:
   chrome: stable
 
-bundler_args: --path=vendor/bundle --without heroku
+bundler_args: --path=vendor/bundle --test --without heroku
 
 cache: bundler
 
