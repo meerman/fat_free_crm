@@ -39,7 +39,7 @@
 #
 
 class Lead < ActiveRecord::Base
-  belongs_to :user
+  belongs_to :user, optional: true
   belongs_to :campaign, optional: true
   belongs_to :assignee, class_name: "User", foreign_key: :assigned_to, optional: true
   has_one :contact, dependent: :nullify # On destroy keep the contact, but nullify its lead_id
